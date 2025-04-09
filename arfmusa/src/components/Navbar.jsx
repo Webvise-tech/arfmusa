@@ -74,8 +74,8 @@ const Navbar = () => {
             <li><Link to="/contact" onClick={() => setIsOpen(false)} className='cursor-pointer hover:text-primary transition-colors duration-300 font-medium text-gray-700'>Contact Us</Link></li>
             <li><Link to="/privacy" onClick={() => setIsOpen(false)} className='cursor-pointer hover:text-primary transition-colors duration-300 font-medium text-gray-700'>Privacy Policy</Link></li>
           </ul>
-          <Link to="/quote" onClick={() => setIsOpen(false)} className='mt-8 block w-full bg-primary text-white px-4 py-2 rounded-md cursor-pointer hover:bg-primary/80 transition-colors duration-300 text-center'>
-            Get a Quote
+          <Link to="/contact" onClick={() => setIsOpen(false)} className='mt-8 block w-full bg-primary text-white px-4 py-2 rounded-md cursor-pointer hover:bg-primary/80 transition-colors duration-300 text-center'>
+            Get in touch
           </Link>
         </div>
       </div>
@@ -83,7 +83,7 @@ const Navbar = () => {
       {/* Overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 md:hidden z-40"
+          className="fixed inset-0 bg-gray-700/50 md:hidden z-40"
           onClick={() => setIsOpen(false)}
         />
       )}
