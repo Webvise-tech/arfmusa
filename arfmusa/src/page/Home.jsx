@@ -1,11 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import ScrollToTop from '../components/ScrollToTop'
 import { Link } from 'react-router-dom'
 import home1 from '../assets/home 1.webp'
 import home2 from '../assets/home 2.webp'
 import { motion, useInView, useSpring, useTransform, useAnimationControls } from 'framer-motion'
 import { services, partners } from '../assets/assets'
+import useScrollToTop from '../hooks/useScrollToTop'
 
 const testimonials = [
   {
@@ -73,6 +75,7 @@ const Home = () => {
   const servicesRef = useRef(null)
   const isServicesInView = useInView(servicesRef, { once: true, margin: "-100px" })
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
+  useScrollToTop();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -85,6 +88,7 @@ const Home = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
+      <ScrollToTop />
       {/* Hero Section */}
       <div className="relative flex-grow bg-gradient-to-br from-primary/10 to-primary/5 pt-[80px]">
         {/* Content */}
@@ -116,15 +120,26 @@ const Home = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
-                <Link 
-                  to="/quote" 
-                  className="bg-primary text-white px-8 py-3 rounded-md cursor-pointer hover:bg-primary/80 transition-colors duration-300 w-fit inline-flex items-center gap-2"
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ 
+                    duration: 0.5,
+                    delay: 0.8
+                  }}
                 >
-                  Get a Quote
-                  <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                </Link>
+                  <Link 
+                    to="/quote" 
+                    className="relative px-8 py-3 border-2 border-primary text-primary font-semibold rounded-lg overflow-hidden z-0 group cursor-pointer hover:text-white transition-colors duration-500 inline-flex items-center gap-2"
+                  >
+                    <span className="absolute inset-0 bg-primary w-0 group-hover:w-full transition-all duration-500 ease-out z-[-1]"></span>
+                    Get a Quote
+                    <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </Link>
+                </motion.div>
               </motion.div>
             </motion.div>
             <motion.div 
@@ -310,12 +325,23 @@ const Home = () => {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="text-center"
           >
-            <Link 
-              to="/services" 
-              className="inline-block bg-primary text-white px-8 py-3 rounded-md hover:bg-primary/90 transition-colors duration-300"
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={isServicesInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ 
+                duration: 0.5,
+                delay: 0.8
+              }}
             >
-              View All Services
-            </Link>
+              <Link 
+                to="/services" 
+                className="relative px-8 py-3 border-2 border-primary text-primary font-semibold rounded-lg overflow-hidden z-0 group cursor-pointer hover:text-white transition-colors duration-500 inline-block"
+              >
+                <span className="absolute inset-0 bg-primary w-0 group-hover:w-full transition-all duration-500 ease-out z-[-1]"></span>
+                View All Services
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { FaPhone, FaEnvelope } from 'react-icons/fa'
 
 const Footer = () => {
   return (
@@ -13,8 +14,8 @@ const Footer = () => {
               <p>30 Wall Street, New York, NY 10005</p>
               <p>626 Wilshire Blvd, Los Angeles, CA 90017</p>
               <p>5700 Yonge Street North American Centre, ON M2M 4K2</p>
-              <p className='mt-4'>(301) 876-4432</p>
-              <p>info@americanrockfm.com</p>
+              <p className='mt-4 flex items-center gap-2'><FaPhone /> (301) 876-4432</p>
+              <p className='flex items-center gap-2'><FaEnvelope /> info@americanrockfm.com</p>
             </div>
           </div>
 

@@ -8,6 +8,6 @@
 
 @theme {
     --color-primary: #3251D0;
-    --color-secondary: #F5C518;
-    --color-navbar: #DDDDDD;
+    --color-navbar: #22A6DE20;
+    --color-section-bg: #22A6DE20;
 }
