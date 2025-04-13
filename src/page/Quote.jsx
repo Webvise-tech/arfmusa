@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import ScrollToTop from '../components/ScrollToTop'
@@ -7,12 +7,74 @@ import home1 from '../assets/home 1.webp'
 import { services } from '../assets/assets'
 import useScrollToTop from '../hooks/useScrollToTop'
 import AnimatedSection from '../components/AnimatedSection'
+import emailjs from '@emailjs/browser'
 
 const Quote = () => {
   useScrollToTop();
+  const formRef = useRef();
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+  
   const [formData, setFormData] = useState({
-    // ... existing state
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    service: '',
+    message: ''
   });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setSuccess(false);
+    setError(false);
+
+    // Create template parameters
+    const templateParams = {
+      from_name: `${formData.firstName} ${formData.lastName}`,
+      to_name: "ARFM Team",
+      reply_to: formData.email,
+      phone: formData.phone,
+      service: formData.service,
+      message: formData.message
+    };
+
+    // Using your existing EmailJS configuration from Contact.jsx
+    emailjs.send(
+      'service_8x6tyoo', // Your service ID
+      'template_wl82wyg', // Your template ID (you may want to create a new quote template)
+      templateParams,
+      'yV-Dp2pjQNHEvbyqd' // Your public key
+    )
+    .then((result) => {
+      setLoading(false);
+      setSuccess(true);
+      // Reset form
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        service: '',
+        message: ''
+      });
+    })
+    .catch((error) => {
+      setLoading(false);
+      setError(true);
+      console.error('Quote submission failed:', error);
+    });
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -257,7 +319,19 @@ const Quote = () => {
                   Fill out the form below and we'll get back to you with a detailed quote.
                 </motion.p>
 
-                <form className="space-y-6">
+                {success && (
+                  <div className="mb-6 p-4 bg-green-100 text-green-700 rounded-lg">
+                    Thank you for your quote request! We'll get back to you soon with a detailed proposal.
+                  </div>
+                )}
+
+                {error && (
+                  <div className="mb-6 p-4 bg-red-100 text-red-700 rounded-lg">
+                    Something went wrong. Please try again later.
+                  </div>
+                )}
+
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <motion.div
                       initial={{ opacity: 0, x: -50 }}
@@ -280,6 +354,8 @@ const Quote = () => {
                         type="text"
                         id="firstName"
                         name="firstName"
+                        value={formData.firstName}
+                        onChange={handleChange}
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                         placeholder="Enter your first name"
@@ -307,6 +383,8 @@ const Quote = () => {
                         type="text"
                         id="lastName"
                         name="lastName"
+                        value={formData.lastName}
+                        onChange={handleChange}
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                         placeholder="Enter your last name"
@@ -336,6 +414,8 @@ const Quote = () => {
                         type="email"
                         id="email"
                         name="email"
+                        value={formData.email}
+                        onChange={handleChange}
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                         placeholder="Enter your email"
@@ -363,6 +443,8 @@ const Quote = () => {
                         type="tel"
                         id="phone"
                         name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                         placeholder="Enter your phone number"
                       />
@@ -389,12 +471,14 @@ const Quote = () => {
                       transition={{ duration: 0.5, delay: 2.0 }}
                       id="service"
                       name="service"
+                      value={formData.service}
+                      onChange={handleChange}
                       required
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                     >
                       <option value="">Select a service</option>
                       {services.map((service) => (
-                        <option key={service.id} value={service.id}>
+                        <option key={service.id} value={service.title}>
                           {service.title}
                         </option>
                       ))}
@@ -422,6 +506,8 @@ const Quote = () => {
                       id="message"
                       name="message"
                       rows="4"
+                      value={formData.message}
+                      onChange={handleChange}
                       required
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       placeholder="Describe your project requirements"
@@ -439,10 +525,11 @@ const Quote = () => {
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.5, delay: 2.5 }}
                       type="submit"
-                      className="relative px-8 py-3 border-2 border-primary text-primary font-semibold rounded-lg overflow-hidden z-0 group cursor-pointer hover:text-white transition-colors duration-500"
+                      disabled={loading}
+                      className="relative px-8 py-3 border-2 border-primary text-primary font-semibold rounded-lg overflow-hidden z-0 group cursor-pointer hover:text-white transition-colors duration-500 disabled:opacity-50"
                     >
                       <span className="absolute inset-0 bg-primary w-0 group-hover:w-full transition-all duration-500 ease-out z-[-1]"></span>
-                      Request Quote
+                      {loading ? 'Sending...' : 'Request Quote'}
                     </motion.button>
                   </motion.div>
                 </form>
