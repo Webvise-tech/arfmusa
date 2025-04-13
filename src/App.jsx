@@ -5,9 +5,13 @@ import Careers from './page/Careers'
 import Contact from './page/Contact'
 import Quote from './page/Quote'
 import Privacy from './page/Privacy'
+
 function App() {
+  // Get the same base path that's configured in vite.config.js
+  const basePath = import.meta.env.BASE_URL
+
   return (
-    <Router>
+    <Router basename={basePath}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />} />
