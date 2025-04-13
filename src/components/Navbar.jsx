@@ -6,8 +6,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
-  const [hoveredLink, setHoveredLink] = useState(null);
-  const [isContactHovered, setIsContactHovered] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,24 +29,12 @@ const Navbar = () => {
     { path: '/privacy', label: 'Privacy Policy' }
   ];
 
-  // Custom styles for reliable hover effects
-  const primaryColor = "#3251D0";
-  const primaryColorOpacity = "rgba(50, 81, 208, 0.8)";
-
   return (
-    <div 
-      className={`fixed top-0 left-0 right-0 w-full z-[100] transition-all duration-300`} 
-      style={{ 
-        backgroundColor: isScrolled ? 'white' : 'rgba(34, 166, 222, 0.125)',
-        boxShadow: isScrolled ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : 'none'
-      }}
-    >
+    <div className={`fixed top-0 left-0 right-0 w-full z-[100] transition-all duration-300 ${isScrolled ? 'bg-white shadow-md' : 'bg-[var(--color-navbar)]'}`}>
       <div className='max-w-7xl mx-auto'>
         <nav className='flex justify-between items-center p-4 px-4 sm:px-6 lg:px-8 h-[80px]'>
           <div className='flex flex-col'>
-            <Link to="/" className='text-2xl font-semibold'>
-              <span style={{ color: primaryColor }}>ARFM</span> - Your Repair Experts
-            </Link>
+            <Link to="/" className='text-2xl font-semibold'><span className='text-primary'>ARFM</span> - Your Repair Experts</Link>
             <span className='text-sm text-gray-500 flex justify-end'>24/7/365 SERVICE</span>
           </div>
           
@@ -63,28 +49,14 @@ const Navbar = () => {
               >
                 <Link 
                   to={link.path} 
-                  onMouseEnter={() => setHoveredLink(link.path)}
-                  onMouseLeave={() => setHoveredLink(null)}
-                  style={{
-                    cursor: 'pointer',
-                    transition: 'color 0.3s',
-                    fontWeight: 500,
-                    position: 'relative',
-                    color: location.pathname === link.path ? primaryColor : 
-                           hoveredLink === link.path ? primaryColor : '#374151'
-                  }}
+                  className={`cursor-pointer transition-colors duration-300 font-medium relative group ${
+                    location.pathname === link.path ? 'text-primary' : 'text-gray-700 hover:text-primary'
+                  }`}
                 >
                   {link.label}
-                  <span style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    height: '2px',
-                    backgroundColor: primaryColor,
-                    transition: 'width 0.3s',
-                    width: location.pathname === link.path ? '100%' : 
-                           hoveredLink === link.path ? '100%' : '0%'
-                  }}></span>
+                  <span className={`absolute bottom-0 left-0 h-[2px] bg-primary transition-all duration-300 ${
+                    location.pathname === link.path ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`} />
                 </Link>
               </motion.li>
             ))}
@@ -93,13 +65,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button 
             onClick={() => setIsOpen(!isOpen)}
-            className='md:hidden'
-            style={{
-              color: '#374151',
-              transition: 'color 0.3s'
-            }}
-            onMouseEnter={(e) => {e.currentTarget.style.color = primaryColor}}
-            onMouseLeave={(e) => {e.currentTarget.style.color = '#374151'}}
+            className='md:hidden text-gray-700 hover:text-primary transition-colors duration-300'
           >
             {isOpen ? (
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -112,53 +78,18 @@ const Navbar = () => {
             )}
           </button>
 
-          <Link 
-            to="/contact" 
-            className='hidden md:block'
-            style={{
-              backgroundColor: isContactHovered ? primaryColorOpacity : primaryColor,
-              color: 'white',
-              padding: '0.5rem 1rem',
-              borderRadius: '0.375rem',
-              cursor: 'pointer',
-              transition: 'background-color 0.3s'
-            }}
-            onMouseEnter={() => setIsContactHovered(true)}
-            onMouseLeave={() => setIsContactHovered(false)}
-          >
-            Get in Touch
-          </Link>
+          <Link to="/contact" className='hidden md:block bg-primary text-white px-4 py-2 rounded-md cursor-pointer hover:bg-primary/80 transition-colors duration-300'>Get in Touch</Link>
         </nav>
       </div>
 
       {/* Mobile Menu */}
-      <div 
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          height: '100%',
-          width: '16rem',
-          backgroundColor: 'white',
-          boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-          transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
-          transition: 'transform 0.3s ease-in-out',
-          zIndex: 101
-        }}
-      >
+      <div className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:hidden z-[101]`}>
         <div className='p-4'>
           <div className="flex justify-between items-center mb-8">
-            <Link to="/" className='text-xl font-semibold'>
-              <span style={{ color: primaryColor }}>ARFM</span>
-            </Link>
+            <Link to="/" className='text-xl font-semibold'><span className='text-primary'>ARFM</span></Link>
             <button 
               onClick={() => setIsOpen(false)}
-              style={{
-                color: '#374151',
-                transition: 'color 0.3s'
-              }}
-              onMouseEnter={(e) => {e.currentTarget.style.color = primaryColor}}
-              onMouseLeave={(e) => {e.currentTarget.style.color = '#374151'}}
+              className='text-gray-700 hover:text-primary transition-colors duration-300'
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -166,56 +97,26 @@ const Navbar = () => {
             </button>
           </div>
           <ul className='flex flex-col gap-4'>
-            {navLinks.map((link, index) => {
-              const [isHovered, setIsHovered] = useState(false);
-              return (
-                <motion.li
-                  key={link.path}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
+            {navLinks.map((link, index) => (
+              <motion.li
+                key={link.path}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+              >
+                <Link 
+                  to={link.path} 
+                  onClick={() => setIsOpen(false)}
+                  className={`cursor-pointer transition-colors duration-300 font-medium block ${
+                    location.pathname === link.path ? 'text-primary' : 'text-gray-700 hover:text-primary'
+                  }`}
                 >
-                  <Link 
-                    to={link.path} 
-                    onClick={() => setIsOpen(false)}
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                    style={{
-                      cursor: 'pointer',
-                      transition: 'color 0.3s',
-                      fontWeight: 500,
-                      display: 'block',
-                      color: location.pathname === link.path ? primaryColor : 
-                             isHovered ? primaryColor : '#374151'
-                    }}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.li>
-              );
-            })}
+                  {link.label}
+                </Link>
+              </motion.li>
+            ))}
           </ul>
-          <Link 
-            to="/contact" 
-            onClick={() => setIsOpen(false)} 
-            style={{
-              marginTop: '2rem',
-              display: 'block',
-              width: '100%',
-              textAlign: 'center',
-              backgroundColor: primaryColor,
-              color: 'white',
-              padding: '0.5rem 1rem',
-              borderRadius: '0.375rem',
-              cursor: 'pointer',
-              transition: 'background-color 0.3s',
-              ":hover": {
-                backgroundColor: primaryColorOpacity
-              }
-            }}
-            onMouseEnter={(e) => {e.currentTarget.style.backgroundColor = primaryColorOpacity}}
-            onMouseLeave={(e) => {e.currentTarget.style.backgroundColor = primaryColor}}
-          >
+          <Link to="/contact" onClick={() => setIsOpen(false)} className='mt-8 block w-full bg-primary text-white px-4 py-2 rounded-md cursor-pointer hover:bg-primary/80 transition-colors duration-300 text-center'>
             Get in touch
           </Link>
         </div>
