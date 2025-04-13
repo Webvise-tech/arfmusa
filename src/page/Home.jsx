@@ -8,7 +8,6 @@ import home2 from '../assets/home 2.webp'
 import { motion, useInView, useSpring, useTransform, useAnimationControls } from 'framer-motion'
 import { services, partners } from '../assets/assets'
 import useScrollToTop from '../hooks/useScrollToTop'
-import PrimaryButton from '../components/PrimaryButton'
 
 const testimonials = [
   {
@@ -130,12 +129,16 @@ const Home = () => {
                     delay: 0.8
                   }}
                 >
-                  <PrimaryButton to="/quote">
+                  <Link 
+                    to="/quote" 
+                    className="relative px-8 py-3 border-2 border-primary text-primary font-semibold rounded-lg overflow-hidden z-0 group cursor-pointer hover:text-white transition-colors duration-500 inline-flex items-center gap-2"
+                  >
+                    <span className="absolute inset-0 bg-primary w-0 group-hover:w-full transition-all duration-500 ease-out z-[-1]"></span>
                     Get a Quote
                     <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
                     </svg>
-                  </PrimaryButton>
+                  </Link>
                 </motion.div>
               </motion.div>
             </motion.div>
@@ -331,9 +334,13 @@ const Home = () => {
                 delay: 0.8
               }}
             >
-              <PrimaryButton to="/services">
+              <Link 
+                to="/services" 
+                className="relative px-8 py-3 border-2 border-primary text-primary font-semibold rounded-lg overflow-hidden z-0 group cursor-pointer hover:text-white transition-colors duration-500 inline-block"
+              >
+                <span className="absolute inset-0 bg-primary w-0 group-hover:w-full transition-all duration-500 ease-out z-[-1]"></span>
                 View All Services
-              </PrimaryButton>
+              </Link>
             </motion.div>
           </motion.div>
         </div>
