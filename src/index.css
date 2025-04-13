@@ -1,13 +1,68 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800;900&display=swap');
-@import "tailwindcss";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+:root {
+    --color-primary: #3251D0;
+    --color-navbar: #22A6DE20;
+    --color-section-bg: #22A6DE20;
+}
+
 @layer base {
     html {
         font-family: 'Nunito', sans-serif;
     }
 }
 
-@theme {
-    --color-primary: #3251D0;
-    --color-navbar: #22A6DE20;
-    --color-section-bg: #22A6DE20;
+
+/* Ensure hover effects work */
+
+@layer utilities {
+    .group:hover .group-hover\:w-full {
+        width: 100%;
+    }
+    .hover\:text-white:hover {
+        color: white;
+    }
+    .hover\:bg-primary:hover {
+        background-color: var(--color-primary);
+    }
+}
+
+
+/* Add these styles at the end of your index.css file */
+
+
+/* Force hover effects to work globally */
+
+.group:hover .group-hover\:w-full {
+    width: 100% !important;
+}
+
+.hover\:text-white:hover {
+    color: white !important;
+}
+
+.hover\:bg-primary:hover {
+    background-color: var(--color-primary) !important;
+}
+
+.hover\:bg-primary\/80:hover,
+.hover\:bg-primary-80:hover {
+    background-color: rgba(50, 81, 208, 0.8) !important;
+}
+
+.hover\:rotate-0:hover {
+    transform: rotate(0deg) !important;
+}
+
+.hover\:scale-105:hover {
+    transform: scale(1.05) !important;
+}
+
+
+/* Combined hover transforms */
+
+.hover\:scale-105.hover\:rotate-0:hover {
+    transform: scale(1.05) rotate(0deg) !important;
 }
