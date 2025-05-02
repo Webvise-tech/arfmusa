@@ -33,14 +33,6 @@ const testimonials = [
     quote: "We've worked with many contractors, but ARFM stands out for their professionalism and expertise. They're our go-to partner for all facility needs.",
     image: "/testimonials/sarah.jpg",
     rating: 5
-  },
-  {
-    id: 4,
-    name: "James Wilson",
-    company: "Urban Development Co.",
-    quote: "The team's responsiveness and ability to handle complex projects make them an invaluable partner. Their work quality speaks for itself.",
-    image: "/testimonials/james.jpg",
-    rating: 5
   }
 ]
 
@@ -412,91 +404,49 @@ const Home = () => {
       </div>
       {/* Testimonials Section */}
       <div className="py-16 bg-gradient-to-br from-primary/10 to-primary/5">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
+  <div className="container mx-auto px-4">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+      className="text-center mb-12"
+    >
+      <h3 className="text-gray-600 uppercase tracking-wide mb-2">Testimonials</h3>
+      <h2 className="text-4xl font-bold mb-4 text-primary">What Clients Say</h2>
+    </motion.div>
+
+    <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
+      {testimonials.map((testimonial, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: index * 0.2 }}
+          viewport={{ once: true }}
+          className="bg-white p-6 rounded-2xl shadow-lg text-center"
+        >
+          <svg 
+            className="w-12 h-12 mx-auto mb-4 text-primary/10"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <h3 className="text-gray-600 uppercase tracking-wide mb-2">Testimonials</h3>
-            <h2 className="text-4xl font-bold mb-4 text-primary">What Clients Say</h2>
-          </motion.div>
+            <path d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.956.76-3.022.66-1.065 1.515-1.867 2.558-2.403L9.373 5c-.8.396-1.56.898-2.26 1.505-.71.607-1.34 1.305-1.9 2.094s-.98 1.68-1.25 2.69-.346 2.04-.217 3.1c.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003zm9.124 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.94.09-1.95.75-3.02.66-1.06 1.514-1.86 2.557-2.4L18.49 5c-.8.396-1.555.898-2.26 1.505-.708.607-1.34 1.305-1.894 2.094-.556.79-.97 1.68-1.24 2.69-.273 1-.345 2.04-.217 3.1.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003z" />
+          </svg>
+          <p className="text-lg text-gray-700 italic mb-6">
+            {testimonial.quote}
+          </p>
+          <h4 className="text-xl font-semibold text-primary">
+            {testimonial.name}
+          </h4>
+          <p className="text-gray-600">{testimonial.company}</p>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</div>
 
-          <div className="max-w-4xl mx-auto relative">
-            <div className="relative overflow-hidden">
-              <motion.div
-                animate={{ opacity: 1 }}
-                initial={{ opacity: 0 }}
-                className="text-center px-8 md:px-16"
-              >
-                <svg 
-                  className="w-16 h-16 mx-auto mb-8 text-primary/10"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.956.76-3.022.66-1.065 1.515-1.867 2.558-2.403L9.373 5c-.8.396-1.56.898-2.26 1.505-.71.607-1.34 1.305-1.9 2.094s-.98 1.68-1.25 2.69-.346 2.04-.217 3.1c.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003zm9.124 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.94.09-1.95.75-3.02.66-1.06 1.514-1.86 2.557-2.4L18.49 5c-.8.396-1.555.898-2.26 1.505-.708.607-1.34 1.305-1.894 2.094-.556.79-.97 1.68-1.24 2.69-.273 1-.345 2.04-.217 3.1.168 1.4.62 2.52 1.356 3.35.735.84 1.652 1.26 2.748 1.26.965 0 1.766-.29 2.4-.878.628-.576.94-1.365.94-2.368l.002.003z" />
-                </svg>
-                <motion.p
-                  key={currentTestimonial}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="text-xl md:text-2xl text-gray-700 mb-8 italic"
-                >
-                  {testimonials[currentTestimonial].quote}
-                </motion.p>
-                <motion.div
-                  key={`author-${currentTestimonial}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <h4 className="text-xl font-semibold text-primary">
-                    {testimonials[currentTestimonial].name}
-                  </h4>
-                  <p className="text-gray-600">{testimonials[currentTestimonial].company}</p>
-                </motion.div>
-              </motion.div>
-            </div>
-
-            <div className="flex justify-center space-x-2 mt-8">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentTestimonial(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer ${
-                    currentTestimonial === index ? 'bg-primary scale-125' : 'bg-primary/20'
-                  }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={() => setCurrentTestimonial(prev => (prev - 1 + testimonials.length) % testimonials.length)}
-              className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors duration-300 cursor-pointer"
-              aria-label="Previous testimonial"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-
-            <button
-              onClick={() => setCurrentTestimonial(prev => (prev + 1) % testimonials.length)}
-              className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors duration-300 cursor-pointer"
-              aria-label="Next testimonial"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
       {/* Statistics Section */}
       <div className="py-16 bg-white">
         <div className="container mx-auto px-4">
