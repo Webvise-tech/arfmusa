@@ -1,8 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaPhone, FaEnvelope } from 'react-icons/fa'
+import emailjs from '@emailjs/browser'
 
 const Footer = () => {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState('')
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    
+    try {
+      // Replace these with your actual EmailJS credentials
+      const serviceId = 'YOUR_SERVICE_ID'
+      const templateId = 'YOUR_TEMPLATE_ID'
+      const publicKey = 'YOUR_PUBLIC_KEY'
+
+      const templateParams = {
+        to_email: 'your-email@example.com', // Your email where you want to receive subscriptions
+        from_email: email,
+        message: `New subscription from: ${email}`
+      }
+
+      await emailjs.send(serviceId, templateId, templateParams, publicKey)
+      setStatus('success')
+      setEmail('')
+    } catch (error) {
+      console.error('Error sending email:', error)
+      setStatus('error')
+    }
+  }
+
   return (
     <footer className='bg-navbar text-gray-700 py-8'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -36,16 +64,28 @@ const Footer = () => {
           <div>
             <h3 className='text-primary text-xl font-semibold mb-4'>Subscribe to Our Newsletter</h3>
             <p className='mb-4'>Discover expert insights, practical tips, and the latest trends in building and repair. From breakthrough tools to smart solutions, ARFM keeps you informed and ahead of the curve.</p>
-            <div className='flex flex-col space-y-4'>
+            <form onSubmit={handleSubmit} className='flex flex-col space-y-4'>
               <input 
                 type="email" 
                 placeholder="Enter your email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
                 className='px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-primary'
               />
-              <button className='bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/80 transition-colors duration-300 cursor-pointer'>
+              <button 
+                type="submit"
+                className='bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/80 transition-colors duration-300 cursor-pointer'
+              >
                 Subscribe
               </button>
-            </div>
+              {status === 'success' && (
+                <p className="text-green-500">Thank you for subscribing!</p>
+              )}
+              {status === 'error' && (
+                <p className="text-red-500">Something went wrong. Please try again.</p>
+              )}
+            </form>
           </div>
         </div>
 

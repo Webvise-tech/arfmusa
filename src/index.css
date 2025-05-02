@@ -1,13 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200..900&family=Questrial&display=swap');
 @import "tailwindcss";
 @layer base {
     html {
-        font-family: 'Nunito', sans-serif;
+        font-family: 'Questrial', Arial, Helvetica, sans-serif;
     }
 }
 
 @theme {
-    --color-primary: #3251D0;
-    --color-navbar: #22A6DE20;
+    --color-primary: #1B85B2;
+    --color-navbar: #15698E;
     --color-section-bg: #22A6DE20;
 }
+
+
+/*3251D0
