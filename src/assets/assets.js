@@ -11,6 +11,7 @@ import logo5 from './logo5.jpeg'
 import logo6 from './logo6.jpeg'
 import logo7 from './logo7.jpeg'
 import logo8 from './logo8.jpeg'
+import MainLogo from './main-logo.png'
 
 export const services = [{
         id: 1,
@@ -98,4 +99,4 @@ export const partners = [{
     },
 ]
 
-export { home1, home2 }
+export { home1, home2, MainLogo }

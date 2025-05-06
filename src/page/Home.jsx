@@ -5,7 +5,7 @@ import ScrollToTop from '../components/ScrollToTop'
 import { Link } from 'react-router-dom'
 import home1 from '../assets/home 1.webp'
 import home2 from '../assets/home 2.webp'
-import { motion, useInView, useSpring, useTransform, useAnimationControls } from 'framer-motion'
+import { motion, AnimatePresence, useInView, useSpring, useTransform, useAnimationControls } from 'framer-motion'
 import { services, partners } from '../assets/assets'
 import useScrollToTop from '../hooks/useScrollToTop'
 
@@ -67,132 +67,96 @@ const Home = () => {
   const servicesRef = useRef(null)
   const isServicesInView = useInView(servicesRef, { once: true, margin: "-100px" })
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
+  const [randomImages, setRandomImages] = useState([])
+  const [currentBg, setCurrentBg] = useState(0)
+  const autoSwipeRef = useRef()
   useScrollToTop();
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 5000)
-
-    return () => clearInterval(interval)
+    const shuffled = [...services].sort(() => 0.5 - Math.random())
+    setRandomImages(shuffled.slice(0, 3))
+    setCurrentBg(0)
   }, [])
+
+  // Auto-swipe every 5s
+  useEffect(() => {
+    if (randomImages.length < 2) return;
+    autoSwipeRef.current = setInterval(() => {
+      setCurrentBg((prev) => (prev === randomImages.length - 1 ? 0 : prev + 1))
+    }, 5000)
+    return () => clearInterval(autoSwipeRef.current)
+  }, [randomImages])
+
+  const handlePrev = () => {
+    setCurrentBg((prev) => (prev === 0 ? randomImages.length - 1 : prev - 1))
+    clearInterval(autoSwipeRef.current)
+  }
+  const handleNext = () => {
+    setCurrentBg((prev) => (prev === randomImages.length - 1 ? 0 : prev + 1))
+    clearInterval(autoSwipeRef.current)
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <ScrollToTop />
       {/* Hero Section */}
-      <div className="relative flex-grow bg-gradient-to-br from-primary/10 to-primary/5 pt-[80px]">
-        {/* Content */}
-        <div className="relative z-10 container mx-auto px-4 py-12 flex flex-col justify-center">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
+      <div className="relative w-full min-h-[calc(100vh-80px)] mt-[80px] overflow-hidden">
+        {/* Top Left Tagline */}
+        <div className="absolute top-6 left-6 z-20 text-white font-bold text-lg md:text-2xl drop-shadow-lg bg-black/30 px-4 py-2 rounded-lg pointer-events-none select-none">
+          self performing 24/7/365
+        </div>
+        {/* Background Image Slider with Fade Animation */}
+        <AnimatePresence initial={false}>
+          {randomImages.length > 0 && (
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <motion.h1 
-                className="text-5xl md:text-6xl font-bold mb-4 text-gray-800 max-w-3xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                Your Self-Performing Facility Partner — <span className="text-primary">Quality, Speed, and Control You Can Count On.</span>
-              </motion.h1>
-              <motion.p 
-                className="text-lg md:text-xl text-gray-600 max-w-2xl mb-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-               At ARFM, we don't outsource—we self-perform. With our expert in-house teams, we deliver consistent, high-quality facility solutions that are faster, more efficient, and built to last. Discover the power of complete control and unmatched accountability
-              </motion.p>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-              >
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ 
-                    duration: 0.5,
-                    delay: 0.8
-                  }}
-                >
-                  <Link 
-                    to="/quote" 
-                    className="relative px-8 py-3 border-2 border-primary text-primary font-semibold rounded-lg overflow-hidden z-0 group cursor-pointer hover:text-white transition-colors duration-500 inline-flex items-center gap-2"
-                  >
-                    <span className="absolute inset-0 bg-primary w-0 group-hover:w-full transition-all duration-500 ease-out z-[-1]"></span>
-                    Get a Quote
-                    <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
-                  </Link>
-                </motion.div>
-              </motion.div>
-            </motion.div>
-            <motion.div 
-              className="relative h-[250px] md:h-[600px] flex items-center justify-center mt-8 md:mt-0"
+              key={randomImages[currentBg].image}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8, ease: 'easeInOut' }}
+              className="absolute inset-0 w-full h-full bg-center bg-cover transition-all duration-700"
+              style={{
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)), url('${randomImages[currentBg].image}')`,
+                zIndex: 1
+              }}
+            />
+          )}
+        </AnimatePresence>
+        {/* Overlay Content */}
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center h-full w-full text-center px-4">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">REDEFINE YOUR BRAND PERCEPTION</h1>
+          <p className="text-xl md:text-2xl text-white mb-10 drop-shadow-lg">Exterior Solutions Tailored to Your Business Needs</p>
+        </div>
+        {/* Slider Arrows */}
+        {randomImages.length > 1 && (
+          <>
+            <button
+              onClick={handlePrev}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 text-6xl text-primary font-bold hover:text-primary/80 transition-colors duration-300"
+              aria-label="Previous"
             >
-              <div className="relative w-[60%] md:w-[90%] h-full">
-                <motion.img 
-                  src={home1} 
-                  alt="Professional worker" 
-                  className="absolute z-10 w-[55%] md:w-[70%] h-[200px] md:h-[520px] object-cover rounded-lg shadow-xl transform -rotate-6 hover:rotate-0 transition-all duration-300 hover:scale-105 left-0"
-                  initial={{ opacity: 0, x: 50, rotate: -12 }}
-                  animate={{ 
-                    opacity: 1, 
-                    x: 0, 
-                    rotate: -6,
-                    y: [0, -40, 0]
-                  }}
-                  transition={{ 
-                    opacity: { duration: 0.8, delay: 0.3 },
-                    x: { duration: 0.8, delay: 0.3 },
-                    rotate: { duration: 0.8, delay: 0.3 },
-                    y: {
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      repeatType: "reverse"
-                    }
-                  }}
-                  whileHover={{ scale: 1.05, rotate: 0 }}
-                />
-                <motion.img 
-                  src={home2} 
-                  alt="Modern staircase" 
-                  className="absolute z-20 w-[45%] md:w-[55%] h-[150px] md:h-[380px] object-cover rounded-lg shadow-xl transform hover:rotate-0 transition-all duration-300 hover:scale-105 right-0 translate-x-[-10%] md:translate-x-0"
-                  initial={{ opacity: 0, x: -50, rotate: 12 }}
-                  animate={{ 
-                    opacity: 1, 
-                    x: 0, 
-                    rotate: 6,
-                    y: [0, -40, 0]
-                  }}
-                  transition={{ 
-                    opacity: { duration: 0.8, delay: 0.5 },
-                    x: { duration: 0.8, delay: 0.5 },
-                    rotate: { duration: 0.8, delay: 0.5 },
-                    y: {
-                      duration: 2.5,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      repeatType: "reverse",
-                      delay: 0.2
-                    }
-                  }}
-                  whileHover={{ scale: 1.05, rotate: 0 }}
-                />
-              </div>
-            </motion.div>
-          </div>
+              &#8592;
+            </button>
+            <button
+              onClick={handleNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 text-6xl text-primary font-bold hover:text-primary/80 transition-colors duration-300"
+              aria-label="Next"
+            >
+              &#8594;
+            </button>
+          </>
+        )}
+        {/* Dots */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+          {randomImages.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => { setCurrentBg(idx); clearInterval(autoSwipeRef.current); }}
+              className={`w-3 h-3 rounded-full ${currentBg === idx ? 'bg-primary' : 'bg-white/60'} transition-colors`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
         </div>
       </div>
       {/* About Section */}
