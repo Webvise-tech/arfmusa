@@ -10,10 +10,11 @@ import Careers from './page/Careers';
 import HardServices from './page/Services/HardServices';
 import IntegratedServices from './page/Services/IntegratedServices';
 import SoftServices from './page/Services/SoftServices';
+import Privacy from './page/Privacy';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/company-overview" element={<CompanyOverView />} />
@@ -25,6 +26,8 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/quote" element={<Quote />} />
         <Route path="/careers" element={<Careers />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="*" element={<Home />} />
       </Routes>
     </Router>
   );
