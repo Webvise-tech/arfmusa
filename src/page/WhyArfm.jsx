@@ -5,6 +5,7 @@ import ScrollToTop from '../components/ScrollToTop';
 import { motion } from 'framer-motion';
 import { services } from '../assets/assets';
 import useScrollToTop from '../hooks/useScrollToTop';
+import { Link } from 'react-router-dom';
 
 const WhyArfm = () => {
   useScrollToTop();
@@ -147,18 +148,18 @@ const WhyArfm = () => {
                       Let's build a partnership that delivers results.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <a 
-                        href="/contact" 
+                      <Link 
+                        to="/contact" 
                         className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors duration-300"
                       >
                         Contact Us
-                      </a>
-                      <a 
-                        href="/quote" 
+                      </Link>
+                      <Link 
+                        to="/quote" 
                         className="inline-block bg-white text-primary px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-300"
                       >
                         Get a Quote
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>

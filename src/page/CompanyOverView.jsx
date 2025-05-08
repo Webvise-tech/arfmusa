@@ -5,6 +5,7 @@ import ScrollToTop from '../components/ScrollToTop'
 import { motion } from 'framer-motion'
 import { services } from '../assets/assets'
 import useScrollToTop from '../hooks/useScrollToTop'
+import { Link } from 'react-router-dom'
 
 const CompanyOverView = () => {
   useScrollToTop();
@@ -248,12 +249,12 @@ const CompanyOverView = () => {
                     <p className="text-lg mb-6">
                       If you're looking for a facility maintenance partner who shows up, communicates clearly, and gets the job done right — every time — you're in the right place.
                     </p>
-                    <a 
-                      href="/contact" 
+                    <Link 
+                      to="/contact" 
                       className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors duration-300"
                     >
                       Let's Talk
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
