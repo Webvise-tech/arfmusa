@@ -81,10 +81,12 @@ const Home = () => {
   // Auto-swipe every 5s
   useEffect(() => {
     if (randomImages.length < 2) return;
-    autoSwipeRef.current = setInterval(() => {
+    
+    const interval = setInterval(() => {
       setCurrentBg((prev) => (prev === randomImages.length - 1 ? 0 : prev + 1))
     }, 5000)
-    return () => clearInterval(autoSwipeRef.current)
+
+    return () => clearInterval(interval)
   }, [randomImages])
 
   const handlePrev = () => {
@@ -101,21 +103,21 @@ const Home = () => {
       <Navbar />
       <ScrollToTop />
       {/* Hero Section */}
-      <div className="relative w-full min-h-[calc(100vh-80px)] mt-[80px] overflow-hidden">
+      <div className="relative w-full min-h-[calc(100vh-80px)] mt-[80px] overflow-hidden bg-black">
         {/* Top Left Tagline */}
         <div className="absolute top-6 left-6 z-20 text-white font-bold text-lg md:text-2xl drop-shadow-lg bg-black/30 px-4 py-2 rounded-lg pointer-events-none select-none">
           self performing 24/7/365
         </div>
-        {/* Background Image Slider with Fade Animation */}
-        <AnimatePresence initial={false}>
+        {/* Background Image Slider with Swipe Animation */}
+        <AnimatePresence initial={false} mode="wait">
           {randomImages.length > 0 && (
             <motion.div
               key={randomImages[currentBg].image}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: 'easeInOut' }}
-              className="absolute inset-0 w-full h-full bg-center bg-cover transition-all duration-700"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="absolute inset-0 w-full h-full bg-center bg-cover bg-black"
               style={{
                 backgroundImage: `linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)), url('${randomImages[currentBg].image}')`,
                 zIndex: 1

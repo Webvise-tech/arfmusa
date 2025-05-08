@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { FaPhone, FaEnvelope } from 'react-icons/fa'
 import emailjs from '@emailjs/browser'
@@ -6,28 +6,44 @@ import emailjs from '@emailjs/browser'
 const Footer = () => {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init("FFIdkF1hxK91JLren")
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsLoading(true)
+    setStatus('')
     
     try {
-      // Replace these with your actual EmailJS credentials
-      const serviceId = 'YOUR_SERVICE_ID'
-      const templateId = 'YOUR_TEMPLATE_ID'
-      const publicKey = 'YOUR_PUBLIC_KEY'
-
       const templateParams = {
-        to_email: 'your-email@example.com', // Your email where you want to receive subscriptions
-        from_email: email,
-        message: `New subscription from: ${email}`
+        user_email: email,
+        to_name: 'ARFM Team',
+        from_name: 'Newsletter Subscriber',
+        message: 'New newsletter subscription request'
       }
 
-      await emailjs.send(serviceId, templateId, templateParams, publicKey)
-      setStatus('success')
-      setEmail('')
+      const response = await emailjs.send(
+        'service_8x6tyoo',
+        'template_4zdulij',
+        templateParams,
+        'FFIdkF1hxK91JLren'
+      )
+
+      if (response.status === 200) {
+        setStatus('success')
+        setEmail('')
+      } else {
+        throw new Error('Failed to send email')
+      }
     } catch (error) {
-      console.error('Error sending email:', error)
+      console.error('EmailJS Error:', error)
       setStatus('error')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -72,18 +88,22 @@ const Footer = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className='px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-primary'
+                disabled={isLoading}
               />
               <button 
                 type="submit"
-                className='bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/80 transition-colors duration-300 cursor-pointer'
+                className={`bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/80 transition-colors duration-300 cursor-pointer ${
+                  isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                disabled={isLoading}
               >
-                Subscribe
+                {isLoading ? 'Subscribing...' : 'Subscribe'}
               </button>
               {status === 'success' && (
-                <p className="text-green-500">Thank you for subscribing!</p>
+                <p className="text-green-500">Thank you for subscribing! We'll keep you updated with our latest news and insights.</p>
               )}
               {status === 'error' && (
-                <p className="text-red-500">Something went wrong. Please try again.</p>
+                <p className="text-red-500">Something went wrong. Please try again later.</p>
               )}
             </form>
           </div>

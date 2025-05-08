@@ -85,7 +85,6 @@ const Navbar = () => {
 
   const navLinks = [
     { path: '/', label: 'Home' },
-    { path: '/services', label: 'Services' },
     { path: '/careers', label: 'Careers' },
     { path: '/quote', label: 'Get a Quote' },
   ];
@@ -196,20 +195,20 @@ const Navbar = () => {
                 >
                   <li>
                     <Link
-                      to="/services/integrated"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => isMobile && setIsOpen(false)}
-                    >
-                      Integrated Services
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
                       to="/services/hard"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={() => isMobile && setIsOpen(false)}
                     >
                       Hard Services
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/services/integrated"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => isMobile && setIsOpen(false)}
+                    >
+                      Integrated Services
                     </Link>
                   </li>
                   <li>
@@ -348,16 +347,16 @@ const Navbar = () => {
               {servicesClicked && (
                 <div className="flex flex-col gap-2 pl-7">
                   <Link
-                    to="/services/integrated"
+                    to="/services/hard"
                     className="mt-2 cursor-pointer transition-colors duration-300 font-medium text-gray-700 hover:text-primary"
                   >
-                    Integrated Services
+                    Hard Services
                   </Link>
                   <Link
-                    to="/services/hard"
+                    to="/services/integrated"
                     className="cursor-pointer transition-colors duration-300 font-medium text-gray-700 hover:text-primary"
                   >
-                    Hard Services
+                    Integrated Services
                   </Link>
                   <Link
                     to="/services/soft"
